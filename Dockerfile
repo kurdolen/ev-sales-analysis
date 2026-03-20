@@ -1,27 +1,25 @@
-# Use official Python runtime as base image
 FROM python:3.10-slim
 
-# Set working directory in container
 WORKDIR /app
 
-# Install system dependencies for tkinter and GUI
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
+    tk \
     python3-tk \
-    python3-dev \
-    x11-apps \
+    build-essential \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements.txt
 COPY requirements.txt .
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt
 
-# Copy application files
 COPY . .
 
-# Set display for GUI applications
-ENV DISPLAY=:0
+ENV DISPLAY=host.docker.internal:0.0
 
-# Run the application
 CMD ["python", "graph.py"]
