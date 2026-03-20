@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import os
+import platform
 
 
 class EVSalesVisualizationApp:
@@ -12,7 +13,12 @@ class EVSalesVisualizationApp:
         self.root = root
         self.root.title("EV Sales Analysis - Data Visualization")
         # Make window fullscreen
-        self.root.state('zoomed')
+        import platform
+
+        if platform.system() == 'Windows':
+            self.root.state('zoomed')
+        else:
+            self.root.state('normal')
         self.root.geometry("1920x1080")
         
         # Load dataset
